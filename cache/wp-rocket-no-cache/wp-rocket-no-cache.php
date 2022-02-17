@@ -18,23 +18,9 @@ defined( 'ABSPATH' ) or die();
 
 /**
  * Disable page caching in WP Rocket.
- *
+ * BigScoots - GRoJp2wcY6kFN
  * @link http://docs.wp-rocket.me/article/61-disable-page-caching
  */
 add_filter( 'do_rocket_generate_caching_files', '__return_false' );
-
-/**
- * Cleans entire cache folder on activation.
- *
- * @author Arun Basil Lal
- */
-function clean_wp_rocket_cache() {
-
-	if ( ! function_exists( 'rocket_clean_domain' ) ) {
-		return false;
-	}
-
-	// Purge entire WP Rocket cache.
-	rocket_clean_domain();
-}
-register_activation_hook( __FILE__, __NAMESPACE__ . '\clean_wp_rocket_cache' );
+add_filter( 'rocket_generate_advanced_cache_file', '__return_false' );
+add_filter( 'rocket_disable_htaccess', '__return_false' );

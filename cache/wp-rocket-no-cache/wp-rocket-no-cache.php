@@ -18,13 +18,44 @@ defined( 'ABSPATH' ) or die();
 
 /**
  * Disable page caching in WP Rocket.
- * BigScoots - 6Ct76O02OCG
+ * BigScoots - e7iL48AQkzh
  * @link http://docs.wp-rocket.me/article/61-disable-page-caching
  */
 add_filter( 'do_rocket_generate_caching_files', '__return_false' );
 add_filter( 'rocket_generate_advanced_cache_file', '__return_false' );
 add_filter( 'rocket_disable_htaccess', '__return_false' );
-add_filter( 'pre_get_rocket_option_sitemap_preload', '__return_zero' );
-add_filter( 'pre_get_rocket_option_sitemap_preload_url_crawl', '__return_zero' );
-add_filter( 'pre_get_rocket_option_sitemaps', '__return_zero' );
-add_filter( 'pre_get_rocket_option_manual_preload', '__return_zero' );
+
+
+namespace WP_Rocket\Helpers\static_files\preload\change_parameters;
+
+defined( 'ABSPATH' ) or die();
+   
+function preload_batch_size( $value ) {     
+      
+     $value = 10; 
+   
+     return $value;
+ }
+ add_filter( 'rocket_preload_cache_pending_jobs_cron_rows_count', __NAMESPACE__ .'\preload_batch_size'  );
+
+function preload_cron_interval( $interval ) {   
+     
+     // change this value, default is 60 seconds:
+     $interval = 120;
+     
+     return $interval;
+ }
+add_filter( 'rocket_preload_pending_jobs_cron_interval', __NAMESPACE__ .'\preload_cron_interval'  );
+
+ function preload_requests_delay( $delay_between ) {   
+     
+     // Edit this value, change the number of seconds
+     $seconds = 2.5;
+     // finish editing
+     
+     // All done, don't change this part. 
+     $delay_between = $seconds * 1000000;
+     
+     return $delay_between;
+ }
+add_filter( 'rocket_preload_delay_between_requests', __NAMESPACE__ .'\preload_requests_delay'  );
